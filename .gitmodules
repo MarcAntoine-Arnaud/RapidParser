@@ -1,0 +1,6 @@
+[submodule "src/rapidjson"]
+	path = src/rapidjson
+	url = git@github.com:MarcAntoine-Arnaud/rapidjson.git
+[submodule "src/rapidxml"]
+	path = src/rapidxml
+	url = git@github.com:MarcAntoine-Arnaud/rapidxml.git
