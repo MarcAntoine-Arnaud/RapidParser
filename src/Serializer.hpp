@@ -1,4 +1,4 @@
-#ifndef _MEDIA_META_SERIALIZER_HPP_
+#ifndef _RAPID_PARSER_SERIALIZER_HPP_
 #define _RAPID_PARSER_SERIALIZER_HPP_
 
 #include <vector>
