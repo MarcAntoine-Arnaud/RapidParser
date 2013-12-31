@@ -10,6 +10,7 @@ class Serializer
 {
 public:
 	Serializer()
+		: indentOutput( false )
 	{
 	}
 	
@@ -20,7 +21,15 @@ public:
 	
 	virtual void addEmptyElement( const std::vector< char* >& path ) = 0;
 	
+	void indent( const bool indent )
+	{
+		indentOutput = indent;
+	};
+
 	virtual std::string get() = 0;
+
+protected:
+	bool indentOutput;
 };
 
 }

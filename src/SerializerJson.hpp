@@ -7,6 +7,7 @@
 #include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
+#include <rapidjson/prettywriter.h>
 
 #include <iostream>
 
@@ -33,8 +34,17 @@ public:
 	{
 		using namespace rapidjson;
 		StringBuffer strbuf;
-		Writer< StringBuffer > writer( strbuf );
-		doc.Accept( writer );
+
+		if( indentOutput )
+		{
+			PrettyWriter< StringBuffer > writer( strbuf );
+			doc.Accept( writer );
+		}
+		else
+		{
+			Writer< StringBuffer > writer( strbuf );
+			doc.Accept( writer );
+		}
 		return strbuf.GetString();
 	}
 	

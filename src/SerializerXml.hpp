@@ -3,8 +3,8 @@
 
 #include "Serializer.hpp"
 
-#include <rapidxml.hpp>
-#include <rapidxml_print.hpp>
+#include <rapidxml/rapidxml.hpp>
+#include <rapidxml/rapidxml_print.hpp>
 
 #include <sstream>
 
@@ -32,9 +32,9 @@ public:
 	
 	std::string get()
 	{
-		std::ostringstream stringDoc;
-		stringDoc << doc;
-		return stringDoc.str();
+		std::string stringDoc;
+		rapidxml::print( std::back_inserter( stringDoc ), doc, ( ! indentOutput ) && rapidxml::print_no_indenting );
+		return stringDoc;
 	}
 
 private:
