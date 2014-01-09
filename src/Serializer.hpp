@@ -2,6 +2,7 @@
 #define _RAPID_PARSER_SERIALIZER_HPP_
 
 #include <vector>
+#include <string>
 
 namespace rapid_parser
 {
