@@ -27,6 +27,7 @@ public:
 	void add( const char* key, const size_t data, const std::vector< char* >& path );
 	void add( const char* key, const int data, const std::vector< char* >& path );
 	void add( const char* key, const double data, const std::vector< char* >& path );
+	void add( const char* key, const bool data, const std::vector< char* >& path );
 	
 	void addEmptyElement( const std::vector< char* >& path );
 	

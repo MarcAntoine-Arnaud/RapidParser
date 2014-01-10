@@ -9,8 +9,6 @@
 #include <rapidjson/writer.h>
 #include <rapidjson/prettywriter.h>
 
-#include <iostream>
-
 namespace rapid_parser
 {
 
@@ -27,6 +25,7 @@ public:
 	void add( const char* key, const size_t data, const std::vector< char* >& path );
 	void add( const char* key, const int data, const std::vector< char* >& path );
 	void add( const char* key, const double data, const std::vector< char* >& path );
+	void add( const char* key, const bool data, const std::vector< char* >& path );
 	
 	void addEmptyElement( const std::vector< char* >& path );
 	
@@ -52,6 +51,8 @@ private:
 	rapidjson::Value* getValue( const std::vector< char* >& path );
 	rapidjson::Value* get( const char* id, rapidjson::Value* ref = nullptr );
 	
+	bool pathExist( const std::vector< char* >& path );
+
 private:
 	rapidjson::Document doc;
 };

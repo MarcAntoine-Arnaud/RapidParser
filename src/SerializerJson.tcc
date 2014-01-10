@@ -7,17 +7,13 @@ namespace rapid_parser
 rapidjson::Value* SerializerJson::getValue( const std::vector< char* >& path )
 {
 	rapidjson::Value* v = nullptr;
-	std::string fullPath;
 	if( path.size() )
 	{
 		for( auto p : path )
 		{
-			fullPath += "/";
-			fullPath += p;
 			v = get( p, v );
 		}
 	}
-	//std::cout << fullPath << std::endl;
 	return v;
 }
 
@@ -97,10 +93,44 @@ void SerializerJson::add( const char* key, const double data, const std::vector<
 		v->AddMember( key, data, doc.GetAllocator() );
 }
 
+void SerializerJson::add( const char* key, const bool data, const std::vector< char* >& path )
+{
+	rapidjson::Value* v = getValue( path );
+	
+	if( v == nullptr )
+		doc.AddMember( key, data, doc.GetAllocator() );
+	else
+		v->AddMember( key, data, doc.GetAllocator() );
+}
+
+bool SerializerJson::pathExist( const std::vector< char* >& path )
+{
+	rapidjson::Value* v = &doc;
+	if( path.size() )
+	{
+		for( auto p : path )
+		{
+			if( ! v->HasMember( p ) )
+			{
+				return false;
+			}
+			v = get( p, v );
+		}
+	}
+	return true;
+}
+
 void SerializerJson::addEmptyElement( const std::vector< char* >& path )
 {
 	using namespace rapidjson;
-	
+	if( ! pathExist( path ) )
+	{
+		// create new path
+		Value* v = getValue( path );
+		return;
+	}
+
+	// create new element
 	std::vector<char*> p;
 	for( size_t index =0; index < path.size() - 1 ; ++index )
 		p.push_back( path.at( index ) );
@@ -108,7 +138,7 @@ void SerializerJson::addEmptyElement( const std::vector< char* >& path )
 	Value* v = getValue( p );
 	Value newChild( kObjectType );
 	
-	(*v)[ path.at( path.size() - 1 ) ].PushBack( newChild, doc.GetAllocator() );
+	(*v)[ path.at( path.size() - 1 ) ].PushBack( newChild, doc.GetAllocator() );	
 }
 
 }
