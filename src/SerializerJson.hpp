@@ -21,6 +21,8 @@ public:
 		doc.SetObject();
 	}
 
+	void add( const char* key, rapidjson::Value& value, const std::vector< char* >& path );
+
 	void add( const char* key, const std::string& data, const std::vector< char* >& path );
 	void add( const char* key, const size_t data, const std::vector< char* >& path );
 	void add( const char* key, const int data, const std::vector< char* >& path );

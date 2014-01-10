@@ -53,54 +53,44 @@ rapidjson::Value* SerializerJson::get( const char* id, rapidjson::Value* ref )
 	return nullptr;
 }
 
-void SerializerJson::add( const char* key, const std::string& data, const std::vector< char* >& path )
+void SerializerJson::add( const char* key, rapidjson::Value& value, const std::vector< char* >& path )
 {
 	rapidjson::Value* v = getValue( path );
 	
 	if( v == nullptr )
-		doc.AddMember( key, data.c_str(), doc.GetAllocator() );
+		doc.AddMember( key, doc.GetAllocator(), value, doc.GetAllocator() );
 	else
-		v->AddMember( key, data.c_str(), doc.GetAllocator() );
+		v->AddMember( key, doc.GetAllocator(), value, doc.GetAllocator() );
+}
+
+void SerializerJson::add( const char* key, const std::string& data, const std::vector< char* >& path )
+{
+	rapidjson::Value value( data.c_str(), data.size() );
+	add( key, value, path );
 }
 
 void SerializerJson::add( const char* key, const size_t data, const std::vector< char* >& path )
 {
-	rapidjson::Value* v = getValue( path );
-	
-	if( v == nullptr )
-		doc.AddMember( key, data, doc.GetAllocator() );
-	else
-		v->AddMember( key, data, doc.GetAllocator() );
+	rapidjson::Value value( data );
+	add( key, value, path );
 }
 
 void SerializerJson::add( const char* key, const int data, const std::vector< char* >& path )
 {
-	rapidjson::Value* v = getValue( path );
-	
-	if( v == nullptr )
-		doc.AddMember( key, data, doc.GetAllocator() );
-	else
-		v->AddMember( key, data, doc.GetAllocator() );
+	rapidjson::Value value( data );
+	add( key, value, path );
 }
 
 void SerializerJson::add( const char* key, const double data, const std::vector< char* >& path )
 {
-	rapidjson::Value* v = getValue( path );
-	
-	if( v == nullptr )
-		doc.AddMember( key, data, doc.GetAllocator() );
-	else
-		v->AddMember( key, data, doc.GetAllocator() );
+	rapidjson::Value value( data );
+	add( key, value, path );
 }
 
 void SerializerJson::add( const char* key, const bool data, const std::vector< char* >& path )
 {
-	rapidjson::Value* v = getValue( path );
-	
-	if( v == nullptr )
-		doc.AddMember( key, data, doc.GetAllocator() );
-	else
-		v->AddMember( key, data, doc.GetAllocator() );
+	rapidjson::Value value( data );
+	add( key, value, path );
 }
 
 bool SerializerJson::pathExist( const std::vector< char* >& path )
@@ -137,7 +127,7 @@ void SerializerJson::addEmptyElement( const std::vector< char* >& path )
 	
 	Value* v = getValue( p );
 	Value newChild( kObjectType );
-	
+
 	(*v)[ path.at( path.size() - 1 ) ].PushBack( newChild, doc.GetAllocator() );	
 }
 
