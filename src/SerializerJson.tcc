@@ -24,30 +24,30 @@ rapidjson::Value* SerializerJson::get( const char* id, rapidjson::Value* ref )
 	{
 		if( doc.HasMember( id ) )
 		{
-			return &doc[ id ][0u];
+			// std::cout << "has member 0 " << id << std::endl;
+			return &doc[ id ];
 		}
 		else
 		{
-			Value array( kArrayType );
+			// std::cout << "create array 0 " << id << std::endl;
 			Value firstChild( kObjectType );
-			doc.AddMember( id, array, doc.GetAllocator() );
-			doc[ id ].PushBack( firstChild, doc.GetAllocator() );
-			return &doc[ id ][0u];
+			doc.AddMember( id, firstChild, doc.GetAllocator() );
+			return &doc[ id ];
 		}
 	}
 	else
 	{
 		if( ref->HasMember( id ) )
 		{
+			// std::cout << "has member 1 " << id << std::endl;
 			return &ref[0u][id][ ref[0u][ id ].Size() - 1 ];
 		}
 		else
 		{
-			Value array( kArrayType );
+			// std::cout << "create array 1 " << id << std::endl;
 			Value newChild( kObjectType );
-			ref[0u].AddMember( id, array, doc.GetAllocator() );
-			ref[0u][ id ].PushBack( newChild, doc.GetAllocator() );
-			return &ref[0u][ id ][0u];
+			ref[0u].AddMember( id, newChild, doc.GetAllocator() );
+			return &ref[0u][ id ];
 		}
 	}
 	return nullptr;
@@ -57,6 +57,8 @@ void SerializerJson::add( const char* key, rapidjson::Value& value, const std::v
 {
 	rapidjson::Value* v = getValue( path );
 	
+	//std::cout << "add " << key << std::endl;
+
 	if( v == nullptr )
 		doc.AddMember( key, doc.GetAllocator(), value, doc.GetAllocator() );
 	else
@@ -65,7 +67,10 @@ void SerializerJson::add( const char* key, rapidjson::Value& value, const std::v
 
 void SerializerJson::add( const char* key, const std::string& data, const std::vector< char* >& path )
 {
-	rapidjson::Value value( data.c_str(), data.size() );
+	rapidjson::Value value;
+
+	value.SetString( data.c_str(), data.size(), doc.GetAllocator() );
+
 	add( key, value, path );
 }
 
@@ -116,7 +121,7 @@ void SerializerJson::addEmptyElement( const std::vector< char* >& path )
 	if( ! pathExist( path ) )
 	{
 		// create new path
-		Value* v = getValue( path );
+		//Value* v = getValue( path );
 		return;
 	}
 
@@ -128,7 +133,7 @@ void SerializerJson::addEmptyElement( const std::vector< char* >& path )
 	Value* v = getValue( p );
 	Value newChild( kObjectType );
 
-	(*v)[ path.at( path.size() - 1 ) ].PushBack( newChild, doc.GetAllocator() );	
+	(*v)[ path.at( path.size() - 1 ) ].PushBack( newChild, doc.GetAllocator() );
 }
 
 }
