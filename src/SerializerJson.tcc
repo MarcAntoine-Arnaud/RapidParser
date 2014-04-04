@@ -24,14 +24,12 @@ rapidjson::Value* SerializerJson::get( const char* id, rapidjson::Value* ref )
 	{
 		if( doc.HasMember( id ) )
 		{
-			// std::cout << "has member 0 " << id << std::endl;
 			return &doc[ id ];
 		}
 		else
 		{
-			// std::cout << "create array 0 " << id << std::endl;
 			Value firstChild( kObjectType );
-			doc.AddMember( id, firstChild, doc.GetAllocator() );
+			doc.AddMember( id, doc.GetAllocator(), firstChild, doc.GetAllocator() );
 			return &doc[ id ];
 		}
 	}
@@ -39,14 +37,12 @@ rapidjson::Value* SerializerJson::get( const char* id, rapidjson::Value* ref )
 	{
 		if( ref->HasMember( id ) )
 		{
-			// std::cout << "has member 1 " << id << std::endl;
 			return &ref[0u][id][ ref[0u][ id ].Size() - 1 ];
 		}
 		else
 		{
-			// std::cout << "create array 1 " << id << std::endl;
 			Value newChild( kObjectType );
-			ref[0u].AddMember( id, newChild, doc.GetAllocator() );
+			ref[0u].AddMember( id, doc.GetAllocator(), newChild, doc.GetAllocator() );
 			return &ref[0u][ id ];
 		}
 	}
@@ -56,8 +52,6 @@ rapidjson::Value* SerializerJson::get( const char* id, rapidjson::Value* ref )
 void SerializerJson::add( const char* key, rapidjson::Value& value, const std::vector< char* >& path )
 {
 	rapidjson::Value* v = getValue( path );
-	
-	//std::cout << "add " << key << std::endl;
 
 	if( v == nullptr )
 		doc.AddMember( key, doc.GetAllocator(), value, doc.GetAllocator() );
